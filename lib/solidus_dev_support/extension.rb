@@ -18,6 +18,8 @@ module SolidusDevSupport
 
       empty_directory path
 
+      adjust_factories_position path
+
       directory 'app', "#{path}/app"
       directory 'lib', "#{path}/lib"
       directory 'bin', "#{path}/bin"
@@ -118,6 +120,29 @@ module SolidusDevSupport
         path = Pathname(path)
         executable = (path.stat.mode | 0o111)
         path.chmod(executable)
+      end
+
+      def adjust_factories_position(path)
+        testing_support_folder = File.join(path, "lib/#{file_name}/testing_support/")
+        unless File.directory?(testing_support_folder)
+          say_status(:create, testing_support_folder)
+          FileUtils.mkdir_p(testing_support_folder)
+        end
+
+        factories_file_legacy_position = File.join(path, "lib/#{file_name}/factories.rb")
+        factories_file_new_position = File.join(path, "lib/#{file_name}/testing_support/factories.rb")
+
+        factories_folder_legacy_position = File.join(path, "lib/#{file_name}/factories")
+        factories_folder_new_position = File.join(path, "lib/#{file_name}/testing_support/factories")
+
+        if File.exist?(factories_file_legacy_position) && !File.exist?(factories_file_new_position)
+          say_status(:move, "#{factories_file_legacy_position} to #{factories_file_new_position}")
+          FileUtils.mv(factories_file_legacy_position, testing_support_folder)
+        end
+        if Dir.exist?(factories_folder_legacy_position) && !Dir.exist?(factories_folder_new_position) # rubocop:disable Style/GuardClause
+          say_status(:move, "#{factories_folder_legacy_position} to #{factories_folder_new_position}")
+          FileUtils.mv(factories_folder_legacy_position, testing_support_folder)
+        end
       end
     end
 

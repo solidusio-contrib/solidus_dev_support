@@ -30,6 +30,7 @@ RSpec.describe 'Create extension' do
     step :check_solidus_cmd
     step :check_gem_version
     step :check_create_extension
+    step :check_factories_moved_to_new_location
     step :check_bundle_install
     step :check_default_task
     step :check_run_specs
@@ -91,6 +92,25 @@ RSpec.describe 'Create extension' do
           )
         end
       end
+    end
+  end
+
+  def check_factories_moved_to_new_location
+    lib = Pathname(File.join(install_path, "lib/solidus_test_extension"))
+
+    # Simulate what we can find on old extensions
+    FileUtils.mv(lib.join("testing_support/factories.rb"), lib.join("factories.rb"))
+    FileUtils.rmdir(lib.join("testing_support"))
+    FileUtils.mkdir(lib.join("factories"))
+
+    cd(install_path) do
+      # Executing the `solidus extension .` command again, will ask user prompt
+      # to override the factories file we moved in the new postion.
+      expect(Thor::LineEditor).to receive(:readline).and_return("n")
+      sh('solidus extension .')
+
+      expect(lib.join("testing_support/factories.rb")).to exist
+      expect(lib.join("testing_support/factories")).to exist
     end
   end
 
