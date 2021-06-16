@@ -1,6 +1,6 @@
 require: ["rubocop-rspec", "rubocop-rails", "rubocop-performance"]
 
-AllCops: {TargetRubyVersion: 2.5, Exclude: ["spec/dummy/**/*", "sandbox/**/*", "vendor/**/*"]}
+AllCops: {TargetRubyVersion: 2.6, Exclude: ["spec/dummy/**/*", "sandbox/**/*", "vendor/**/*"]}
 
 Layout/ArgumentAlignment: {EnforcedStyle: with_fixed_indentation}
 Layout/DotPosition: {Enabled: false, StyleGuide: "https://relaxed.ruby.style/#layoutdotposition"}

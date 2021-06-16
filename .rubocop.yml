@@ -37,7 +37,7 @@ Style/SlicingWithRange:
   Enabled: true
 
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
   Exclude:
     - tmp/**/*
     - "vendor/**/*"
@@ -50,4 +50,3 @@ Style/FrozenStringLiteralComment:
     - "**/bin/*"
     - "**/exe/*"
     - "spec/**/*"
-
