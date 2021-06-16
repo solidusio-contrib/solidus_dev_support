@@ -42,7 +42,7 @@ If you have an existing extension and want to update it to use the latest standa
 you can run the following in the extension's directory:
 
 ```console
-$ solidus extension .
+$ bundle exec solidus extension .
 ```
 
 In case of conflicting files, you will be prompted for an action. You can overwrite the files with
